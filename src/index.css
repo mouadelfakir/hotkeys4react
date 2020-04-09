@@ -1,13 +1,107 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    background-color: #f9fbfd;
+    font-family: "Cerebri Sans",sans-serif;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.container {
+    width:100%;
+    position:fixed;
+    bottom: 10px;
+}
+
+.card-container {
+    width:450px;
+    margin:auto;
+}
+
+.card-body {
+    float:left;
+    width:100%;
+    padding: 20px 16px;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid #edf2f9;
+    border-radius: .5rem;
+    text-align: center;
+
+    /* animation */
+    animation-name: slideInUp;
+    animation-duration: 300ms;
+    animation-fill-mode: both;
+}
+
+.card-key {
+    color: #12263f;
+    font-size: 2.0em;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.card-description {
+    color: #95aac9;
+    font-size: 0.9em;
+}
+
+
+.list-container {
+    position: fixed;
+    z-index: 10;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+.list-body {
+    margin: auto;
+    display: block;
+    max-width: 700px;
+
+    background-color: #fff;
+    background-clip: border-box;
+    border-radius: .5rem;
+    box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
+
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+}
+
+.list-entry {
+    position: relative;
+    padding: 1rem 1.25rem;
+    background-color: transparent;
+    border: 1px solid #e3ebf6;
+
+    display: flex;
+    width: 100%;
+}
+
+.list-key {
+    width: 90px;
+    color: #12263f;
+    font-size: 1.0em;
+    text-transform: capitalize;
+}
+
+.list-description {
+    flex: 1;
+    color: #95aac9;
+    font-size: 0.9em;
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translate3d(0, 100%, 0);
+        visibility: visible;
+    }
+
+    to {
+        transform: translate3d(0, 0, 0);
+        visibility: visible;
+    }
 }
