@@ -1,7 +1,7 @@
 import * as React from "react";
 
 type Props = {
-    snapshot : {
+    snapshot: {
         timestamp?: string,
         key?: string,
         description?: string,
@@ -9,7 +9,7 @@ type Props = {
     }
 }
 
-export default function HotKeysDisplay({snapshot}: Props) {
+export default function HotKeysDisplay({ snapshot }: Props) {
 
     const [show, setShow] = React.useState(false);
 
@@ -40,6 +40,6 @@ export default function HotKeysDisplay({snapshot}: Props) {
                 </div>
             </div>
             :
-            <></>
+            <div></div>
     );
 }

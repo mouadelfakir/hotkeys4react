@@ -1,11 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+import HotKeys from "./lib/hotkeys";
+import HotKeysContext from "./lib/hotkeys-context";
+import useKeys4react from "./lib/hotkeys-hook";
+import { KeysEvent, LIST_HANDLER } from "./lib/types";
+import HotKeysList from "./lib/option/hotkeys-list";
+import HotKeysDisplay from "./lib/option/hotKeys-display";
+
+
+export default { HotKeys, HotKeysContext, useKeys4react, KeysEvent, LIST_HANDLER, HotKeysList, HotKeysDisplay };
