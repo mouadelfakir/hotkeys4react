@@ -1,5 +1,5 @@
 import * as React from "react";
-import {KeyMap} from "../types";
+import { KeyMap } from "../types";
 
 interface Props {
     list: {
@@ -8,7 +8,7 @@ interface Props {
     }
 }
 
-export default function HotKeysList({list}: Props) {
+export default function HotKeysList({ list }: Props) {
 
     return (
         list?.keyMaps && list.display ?
@@ -16,15 +16,15 @@ export default function HotKeysList({list}: Props) {
                 <div className="list-body">
                     {
                         list.keyMaps.map((keyMap) => (
-                                <div className="list-entry">
-                                    <div className="list-key">{keyMap.key}</div>
-                                    <div className="list-description">{keyMap.description}</div>
-                                </div>
-                            ))
+                            <div className="list-entry">
+                                <div className="list-key">{keyMap.key}</div>
+                                <div className="list-description">{keyMap.description}</div>
+                            </div>
+                        ))
                     }
                 </div>
             </div>
             :
-            <></>
+            <div></div>
     );
 }

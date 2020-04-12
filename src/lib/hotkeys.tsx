@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Hotkeys from './hotkeys-engine';
-import {KeyMap, KeysEvent, LIST_HANDLER, ParentProps} from './types';
-import {find, notEmpty} from "./utils";
+import { KeyMap, KeysEvent, LIST_HANDLER, ParentProps } from './types';
+import { find, notEmpty } from "./utils";
 
 
-export default function HotKeys({keyMaps, children}: ParentProps) {
+export default function HotKeys({ keyMaps, children }: ParentProps) {
 
     const [currentKeyMap, setCurrentKeyMap] = useState<KeyMap | null>(null);
     const [currentTimeStamp, setCurrentTimeStamp] = useState<string>('');
@@ -19,7 +19,7 @@ export default function HotKeys({keyMaps, children}: ParentProps) {
     return (
         keys ?
             <div>
-                <Hotkeys keyName={keys} onKeyDown={onKeyDown} onKeyUp={onKeyUp}/>
+                <Hotkeys keyName={keys} onKeyDown={onKeyDown} onKeyUp={onKeyUp} />
                 {
                     children && children({
                         list: {
@@ -36,7 +36,7 @@ export default function HotKeys({keyMaps, children}: ParentProps) {
                 }
             </div>
             :
-            <></>
+            <div></div>
     );
 
     function onKeyUp(keyName: string, e: any) {
