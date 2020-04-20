@@ -1,78 +1,43 @@
-import React from 'react';
-import * as PropTypes from 'prop-types';
-import Hotkeys, { HotkeysEvent } from 'hotkeys-js';
+import React, {useEffect} from 'react';
+import hotkeys from 'hotkeys-js';
+import {KeyMap} from "./types";
 
-export type OnKeyFun = (shortcut: string, evn: KeyboardEvent, handle: HotkeysEvent) => void;
 
-export interface IReactHotkeysProps {
-    keyName?: string;
+export interface Props {
+    keyMaps: KeyMap[];
     filter?: (event: KeyboardEvent) => boolean;
-    onKeyUp?: OnKeyFun;
-    onKeyDown?: OnKeyFun;
+    onKeyUp?: any;
+    onKeyDown?: any;
     allowRepeat?: boolean;
     disabled?: boolean;
     splitKey?: string;
 }
 
-export default class HotkeysEngine extends React.Component<IReactHotkeysProps> {
-    public static defaultProps: IReactHotkeysProps = {
-        filter(event: KeyboardEvent) {
-            const target = (event.target as HTMLElement) || event.srcElement;
-            let tagName = target.tagName;
-            return !(target.isContentEditable || tagName === 'INPUT' || tagName === 'SELECT' || tagName === 'TEXTAREA');
-        },
-    }
-    static propTypes = {
-        keyName: PropTypes.string,
-        filter: PropTypes.func,
-        onKeyDown: PropTypes.func,
-        onKeyUp: PropTypes.func,
-        disabled: PropTypes.bool,
-        splitKey: PropTypes.string
-    }
-    private isKeyDown: boolean = false;
-    private handle: HotkeysEvent;
-    constructor(props: IReactHotkeysProps) {
-        super(props);
-        this.onKeyDown = this.onKeyDown.bind(this);
-        this.onKeyUp = this.onKeyUp.bind(this);
-        this.handleKeyUpEvent = this.handleKeyUpEvent.bind(this);
-        this.handle = {} as HotkeysEvent;
-    }
-    componentDidMount() {
-        const { filter, splitKey } = this.props;
-        if (filter) {
-            Hotkeys.filter = filter;
-        }
-        Hotkeys.unbind(this.props.keyName as string);
-        Hotkeys(this.props.keyName as string, { splitKey }, this.onKeyDown);
-        document && document.body.addEventListener('keyup', this.handleKeyUpEvent);
-    }
-    componentWillUnmount() {
-        Hotkeys.unbind(this.props.keyName as string);
-        this.isKeyDown = true;
-        this.handle = {} as HotkeysEvent;
-        document && document.body.removeEventListener('keyup', this.handleKeyUpEvent);
-    }
-    onKeyUp(e: KeyboardEvent, handle: HotkeysEvent) {
-        const { onKeyUp, disabled } = this.props;
-        !disabled && onKeyUp && onKeyUp(handle.shortcut, e, handle)
-    }
-    onKeyDown(e: KeyboardEvent, handle: HotkeysEvent) {
-        const { onKeyDown, allowRepeat, disabled } = this.props;
-        if (this.isKeyDown && !allowRepeat) return;
-        this.isKeyDown = true;
-        this.handle = handle;
-        !disabled && onKeyDown && onKeyDown(handle.shortcut, e, handle)
-    }
-    handleKeyUpEvent(e: KeyboardEvent) {
-        if (!this.isKeyDown) return;
-        this.isKeyDown = false;
-        if (this.props.keyName && this.props.keyName.indexOf(this.handle.shortcut) < 0) return;
-        this.onKeyUp(e, this.handle);
-        this.handle = {} as HotkeysEvent;
-    }
-    render() {
-        return this.props.children || null;
-    }
+export default function HotkeysEngine({keyMaps, splitKey, allowRepeat, onKeyUp, onKeyDown}:Props) {
+
+    const keys = keyMaps.filter(keyMap => keyMap.enabled)
+            .map((keyMap) => keyMap.key)
+            .reduce((previous, current) => `${previous},${current}`);
+
+    useEffect(() => {
+        let isKeyDown = false;
+        hotkeys(keys, { splitKey, keyup: true },  function(event, handler) {
+            event.preventDefault();
+
+            if (event.type === 'keydown') {
+                if(!allowRepeat && isKeyDown) return;
+                isKeyDown = true;
+                onKeyDown(handler.key, event);
+            }
+
+            if (event.type === 'keyup') {
+                isKeyDown = false;
+                onKeyUp(handler.key, event)
+            }
+
+            return false;
+        });
+    }, [splitKey, allowRepeat]);
+
+    return <div/>;
 }
