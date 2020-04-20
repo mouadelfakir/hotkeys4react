@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Hotkeys from './hotkeys-engine';
-import { KeyMap, KeysEvent, LIST_HANDLER, ParentProps } from './types';
-import { find, notEmpty } from "./utils";
+import {KeyMap, LIST_HANDLER, ParentProps, KeysEvent} from './types';
+import {find, notEmpty} from "./utils";
 
 
 export default function HotKeys({ keyMaps, children }: ParentProps) {
@@ -10,16 +10,11 @@ export default function HotKeys({ keyMaps, children }: ParentProps) {
     const [currentTimeStamp, setCurrentTimeStamp] = useState<string>('');
     const [showHotKeysList, setShowHotKeysList] = useState(false);
 
-    const keys = notEmpty(keyMaps) ?
-        keyMaps.filter(keyMap => keyMap.enabled)
-            .map((keyMap) => keyMap.key)
-            .reduce((previous, current) => `${previous},${current}`)
-        : null;
 
     return (
-        keys ?
+        notEmpty(keyMaps) ?
             <div>
-                <Hotkeys keyName={keys} onKeyDown={onKeyDown} onKeyUp={onKeyUp} />
+                <Hotkeys keyMaps={keyMaps} onKeyDown={onKeyDown} onKeyUp={onKeyUp}/>
                 {
                     children && children({
                         list: {
@@ -36,19 +31,19 @@ export default function HotKeys({ keyMaps, children }: ParentProps) {
                 }
             </div>
             :
-            <div></div>
+            <div/>
     );
-
-    function onKeyUp(keyName: string, e: any) {
-        const currentKey = find(keyMaps, 'key', keyName);
-        if (currentKey && currentKey.event === KeysEvent.onUp) {
-            doHandleEvent(currentKey, e.timeStamp)
-        }
-    }
 
     function onKeyDown(keyName: string, e: any) {
         const currentKey = find(keyMaps, 'key', keyName);
         if (currentKey && currentKey.event === KeysEvent.onDown) {
+            doHandleEvent(currentKey, e.timeStamp)
+        }
+    }
+
+    function onKeyUp(keyName: string, e: any) {
+        const currentKey = find(keyMaps, 'key', keyName);
+        if (currentKey && currentKey.event === KeysEvent.onUp) {
             doHandleEvent(currentKey, e.timeStamp)
         }
     }
@@ -60,6 +55,7 @@ export default function HotKeys({ keyMaps, children }: ParentProps) {
         }
         if (currentKey.handler === LIST_HANDLER) {
             listHandler();
+            console.log('list')
         } else {
             currentKey.handler();
         }

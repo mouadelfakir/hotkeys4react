@@ -16,7 +16,7 @@ export default function HotKeysList({ list }: Props) {
                 <div className="list-body">
                     {
                         list.keyMaps.map((keyMap) => (
-                            <div className="list-entry">
+                            <div className="list-entry" key={keyMap.key}>
                                 <div className="list-key">{keyMap.key}</div>
                                 <div className="list-description">{keyMap.description}</div>
                             </div>
